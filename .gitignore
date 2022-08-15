@@ -102,7 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
-
+mysql_data/
 ipfs_data/
 ipfs_stag/
 testpdf/
+mysql_data/
+mysql_config/
+elastic/
+mysql_sqldata

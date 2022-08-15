@@ -8,13 +8,23 @@
 - https://towardsdatascience.com/how-to-synchronize-elasticsearch-with-mysql-ed32fc57b339
 - https://stackoverflow.com/questions/62005208/api-caching-for-next-js
 - https://nextjs.org/docs/basic-features/data-fetching/get-static-props
+- https://www.npmjs.com/package/@elastic/elasticsearch
+- https://planetscale.com/pricing
+
+
+sudo chown -R 1000:root docker_data   to give elastic accses to folder
+sudo chown -R 1000:root esdata
 # fscrawler
 
 ## todo
-- 3 explore webtorrent
-- 5 testcases
-- searchable from db
+- split path to give tags
+- test ipfs over vpn docker
+- 2 search endpoints name and path. path is used to search tags
+
+
 ## done
+- 3 explore webtorrent
+- searchable from db
 - 2 express routes   
 - 3 get cid hash to check for duplicate files
 - 1 Setup docker db
@@ -26,6 +36,7 @@
 - 2 get mysql data 
 - running addlibrary() twice deletes all
 - 4 ipfs poc
+- path to harddrive and update ipfs path
 # express rest
 - see parrent folder as a way to sort to catagor.
 # dbdesign

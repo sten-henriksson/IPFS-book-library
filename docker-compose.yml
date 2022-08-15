@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: main
+    ports:
+      - 3306:3306
+    volumes:
+      - "./mysql_config/my.conf:/etc/mysql/conf.d/config-file.cnf"
+      - "./mysql_sqldata:/var/lib/mysql:rw"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8080
+  elasticsearch:
+    container_name: tqd-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+    #volumes:
+    #  - ./esdata:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    ports:
+      - 9300:9300
+      - 9200:9200
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - /home/stenasd3/disk/qbit/qbitConfig:/config
+      - /home/stenasd3/disk/qbit:/downloads
+    ports:
+      - 8081:8080
+      - 6881:6881
+      - 6881:6881/udp
+  ipfs:
+    image: ipfs/kubo:latest
+    restart: unless-stopped
+    volumes:
+      - /home/stenasd3/trove2-back/ipfs_data:/data/ipfs
+      - /home/stenasd3/disk/qbit:/export
+    ports:
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:5001:5001
+      - 4001:4001
+      - 4001:4001/udp
+

@@ -2,13 +2,13 @@
 import express from 'express';
 import { IniDb, updateLibrary } from './src/db.js';
 import route from './src/api-routes.js';
+import { syncElastic } from './src/elastic.js';
 import { addBooksToIpfs, startIPFSNode } from './src/ipfs.js';
-
+import dotenv from 'dotenv'
+dotenv.config()
 try {
   await IniDb();
-  await updateLibrary('testpdf');
-  const node = await startIPFSNode();
-  addBooksToIpfs(node);
+  await syncElastic();
 } catch (error) {
   console.log('error');
 }

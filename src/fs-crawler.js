@@ -10,7 +10,14 @@ function concatPath(path, fold) {
 }
 
 async function getIpfsHash(path) {
-  return Hash.of(readFileSync(path));
+  let hash = false
+  try {
+    hash = await Hash.of(readFileSync(path));
+  } catch (error) {
+    console.log(error);
+    hash = false
+  }
+  return hash
 }
 
 export default async function getAllChildHashes(path) {
@@ -22,6 +29,7 @@ export default async function getAllChildHashes(path) {
       // https://nodejs.org/docs/latest/api/fs.html#direntisdirectory
       // eslint-disable-next-line no-await-in-loop
       const files = await readdir(dirrPath, { withFileTypes: true });
+      console.log(files[0]);
       const dirr = files.filter((x) => x.isDirectory());
       const file = files.filter((x) => x.isFile());
       dirrs = dirrs.concat(dirr.map((x) => concatPath(dirrPath, x)));

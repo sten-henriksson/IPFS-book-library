@@ -4,27 +4,29 @@ import { create } from 'ipfs-http-client';
 import { Book } from './db.js';
 
 async function addToNode(node, path) {
-  const a = await node.add(path, {
+  const a = await node.add(readFileSync(path), {
     pin: true,
-  });//readFileSync(path));
-  console.log(a);
+  });
+  console.log("node", a);
   return a;
 }
 
 export async function addBooksToIpfs(node) {
   const books = await Book.findAll({ attributes: ['path'], raw: true });
-  books.forEach((book) => {
-    addToNode(node, book.path);
-  });
+  for (let index = 0; index < books.length; index++) {
+    const book = books[index];
+    await addToNode(node, book.path)
+  }
 }
 export async function startIPFSNode() {
   return create();
 
 }
+
 /*
 try {
   let a = await create();
-  addToNode(a, "")
+  console.log(await addToNode(a, '/home/stenasd3/disk/qbit/Books/Pathfinder/Flip Mats/Flip Mat - Cavernous Lair.pdf'))
 } catch (error) {
   console.log(error);
 }
