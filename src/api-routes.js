@@ -18,12 +18,15 @@ export default async function route(app) {
     const tags = await pathTags.findAll({ attributes: ['path'], raw: true });
     res.json(tags);
   });
-  app.get('/tagsearch/:tagId', async (req, res) => {
+  app.get('/tagsearch/:page/:tagId', async (req, res) => {
     if (!req.params.tagId) {
       return false;
     }
-    console.log(req.params.tagId.replace('&', '/'));
-    let tag = req.params.tagId.split("&")
+    if (!req.params.page) {
+      return false;
+    }
+    console.log(req.params.tagId.replace('_', '/'));
+    let tag = req.params.tagId.split("_")
     tag = tag.join("/")
     console.log(tag);
     tag = "Pathfinder/" + tag
@@ -33,17 +36,28 @@ export default async function route(app) {
     if (pathsort.length == 0) {
       pathsort = [{ name: "bad search", path: false, hash: false }]
     }
-    res.json(pathsort)
+    const page_amount = 31
+    let page = req.params.page - 1
+    let startpage = page * page_amount
+    let sendvar = pathsort.slice(startpage, startpage + page_amount)
+    res.json({ books: sendvar, pages: Math.floor(pathsort.length / page_amount) + 1 })
   });
-  app.get('/search/:tagId', async (req, res) => {
+  app.get('/search/:page/:tagId', async (req, res) => {
     if (!req.params.tagId) {
       return false;
     }
-    const elasticSeach = await searchElasticPath(req.params.tagId.replace('&', '/'));
-    let pathsort = elasticSeach.sort((a, b) => a.name.localeCompare(b.name))
+    if (!req.params.page) {
+      return false;
+    }
+    const elasticSeach = await searchElasticPath(req.params.tagId.replace('_', '/'));
+    let pathsort = elasticSeach//elasticSeach.sort((a, b) => a.name.localeCompare(b.name))
     if (pathsort.length == 0) {
       pathsort = [{ name: "bad search", path: false, hash: false }]
     }
-    res.json(pathsort)
+    const page_amount = 31
+    let page = req.params.page - 1
+    let startpage = page * page_amount
+    let sendvar = pathsort.slice(startpage, startpage + page_amount)
+    res.json({ books: sendvar, pages: Math.floor(pathsort.length / page_amount) + 1 })
   });
 }

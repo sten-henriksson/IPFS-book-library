@@ -1,13 +1,15 @@
 import { Client } from '@elastic/elasticsearch';
 import { Book } from './db.js';
+import dotenv from 'dotenv'
+dotenv.config()
 const elasticUrl = process.env.ELASTIC_URL || "http://localhost:9200";
 const client = new Client({ node: elasticUrl });
 
 export async function searchElasticPath(keyword) {
     console.log(keyword);
     let search = await client.search({
-        index: 'main',
-        size: 100,
+        index: process.env.ELASTIC_INDEX,
+        size: 5800,
         query: {
             match: { path: keyword }
         }
@@ -21,7 +23,7 @@ export async function syncElastic() {
     console.log(book);
     for (const key in book) {
         await client.index({
-            index: 'main',
+            index: process.env.ELASTIC_INDEX,
             id: book[key].hash,
             document: {
                 hash: book[key].hash,
@@ -31,7 +33,7 @@ export async function syncElastic() {
         })
         console.log("added", book[key].path);
     }
-    console.log(await client.indices.refresh({ index: 'main' }))
+    console.log(await client.indices.refresh({ index: process.env.ELASTIC_INDEX }))
 }
 
 try {

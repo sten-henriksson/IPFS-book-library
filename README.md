@@ -17,12 +17,18 @@ sudo chown -R 1000:root esdata
 # fscrawler
 
 ## todo
-- split path to give tags
-- test ipfs over vpn docker
-- 2 search endpoints name and path. path is used to search tags
-
+- unit test creat tag
+- unit test getAllChildHashes
+- faq
+- env to select dnd or pathfinder api
+- enable "pages" and send in json how many pages there is. before sending and sorting arr select correct page and add an extra param to url
+- next page is hidden if first / last
 
 ## done
+- 2 search endpoints name and path. path is used to search tags
+- links open new tab
+- change & to %
+- split path to give tags
 - 3 explore webtorrent
 - searchable from db
 - 2 express routes   
@@ -54,7 +60,11 @@ to add autoformat
     "eslint.validate": ["javascript"]
 }
 
-
+# plan
+> frontend and backend testing
+> split into mulitiple websites warhammer dnd 5e
+> diffrent elastic index for each sub part
+> https://www.reddit.com/r/nextjs/comments/usrdr3/what_is_the_best_way_to_deploy_nextjs_website_to/i98gk27/?context=8&depth=9
 
 docker run -d \
   --name=ipfs \

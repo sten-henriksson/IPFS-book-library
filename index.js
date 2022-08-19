@@ -14,6 +14,6 @@ try {
 }
 const app = express();
 route(app);
-app.listen(5010, () => {
-  console.log(`Example app listening on port ${5010}`);
+app.listen(1337, () => {
+  console.log(`Example app listening on port ${1337}`);
 });

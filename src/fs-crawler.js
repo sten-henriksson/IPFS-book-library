@@ -1,10 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import Hash from 'ipfs-only-hash';
-/**
- * @param  {string} path parrent path that all children get checked for hashes
- * @returns {Array.Object.<path, hash>} {path,hash} ipfs hash and path
- */
 function concatPath(path, fold) {
   return `${path}/${fold.name}`;
 }
@@ -19,7 +15,10 @@ async function getIpfsHash(path) {
   }
   return hash
 }
-
+/**
+ * @param  {string} path parrent path that all children get checked for hashes
+ * @returns {Array.Object.<path, hash>} {path,hash} ipfs hash and path
+ */
 export default async function getAllChildHashes(path) {
   let dirrs = [path];
   let allFiles = [];

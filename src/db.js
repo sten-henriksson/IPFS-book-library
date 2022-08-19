@@ -4,10 +4,10 @@ import { Sequelize, DataTypes } from 'sequelize';
 import { unlinkSync } from 'node:fs';
 import getAllChildHashes from './fs-crawler.js';
 import dotenv from 'dotenv'
-import { log } from 'node:console';
 dotenv.config()
-const sequelize = new Sequelize('main', 'root', 'root', {
-  host: 'localhost',
+console.log(process.env);
+const sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: process.env.MYSQL_IP,
   dialect: 'mysql',
   logging: false,
 });
