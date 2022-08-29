@@ -94,14 +94,15 @@ function creattag(pathString) {
   const path = pathString.split("/")
   let tags = []
   let tagStart = false
-  let depth = 0
+  let depth = process.env.TAG_DEPTH || 0
   for (let index = 0; index < path.length; index++) {
     const element = path[index];
-    if (element == "Pathfinder") {
+    // will make all dir before TAGSTART not be part of formated string
+    if (element == process.env.TAGSTART) {
       tagStart = true
     }
+    // after Folder trigger add next 3 folder name to tag name
     if (tagStart) {
-
       if (depth < 3) {
         tags.push(element)
         depth++;

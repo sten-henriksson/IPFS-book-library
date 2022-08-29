@@ -40,8 +40,8 @@ services:
       - TZ=Europe/London
       - WEBUI_PORT=8080
     volumes:
-      - /home/stenasd3/disk/qbit/qbitConfig:/config
-      - /home/stenasd3/disk/qbit:/downloads
+      - /home/stenasd4/harddrive/qbit/qbitConfig:/config
+      - /home/stenasd4/harddrive/qbit:/downloads
     ports:
       - 8081:8080
       - 6881:6881
@@ -50,8 +50,8 @@ services:
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
-      - /home/stenasd3/trove2-back/ipfs_data:/data/ipfs
-      - /home/stenasd3/disk/qbit:/export
+      - /home/stenasd4/trove2-back/ipfs_data:/data/ipfs
+      - /home/stenasd4/harddrive/qbit:/export
     ports:
       - 127.0.0.1:8080:8080
       - 127.0.0.1:5001:5001

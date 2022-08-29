@@ -18,9 +18,9 @@ export async function addBooksToIpfs(node) {
     await addToNode(node, book.path)
   }
 }
+
 export async function startIPFSNode() {
   return create();
-
 }
 
 /*
