@@ -11,6 +11,9 @@
 - https://www.npmjs.com/package/@elastic/elasticsearch
 - https://planetscale.com/pricing
 
+pm2 start "npm run dev" --name myAppName
+pm2 logs "myAppName"
+pm2 start npm -- run dev
 
 sudo chown -R 1000:root docker_data   to give elastic accses to folder
 sudo chown -R 1000:root esdata
@@ -19,12 +22,13 @@ sudo chown -R 1000:root esdata
 ## todo
 - unit test creat tag
 - unit test getAllChildHashes
+- add 5e books and way to start backend for selected service
+
+## done
 - faq
 - env to select dnd or pathfinder api
 - enable "pages" and send in json how many pages there is. before sending and sorting arr select correct page and add an extra param to url
 - next page is hidden if first / last
-
-## done
 - 2 search endpoints name and path. path is used to search tags
 - links open new tab
 - change & to %
