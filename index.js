@@ -14,6 +14,6 @@ try {
 }
 const app = express();
 route(app);
-app.listen(1337, () => {
-  console.log(`Example app listening on port ${1337}`);
+app.listen(process.env.PORT || 1337, () => {
+  console.log(`Example app listening on port ${process.env.ELASTIC_URL || 1337}`);
 });
