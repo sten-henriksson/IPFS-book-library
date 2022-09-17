@@ -17,5 +17,4 @@ try {
     //syncElastic();
 } catch (error) {
     console.log(error);
-
 }

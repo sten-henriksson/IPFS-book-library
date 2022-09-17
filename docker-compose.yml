@@ -38,19 +38,19 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8095
     volumes:
-      - /home/stenasd4/harddrive/qbit/qbitConfig:/config
+      - /home/stenasd4/harddrive/qbit/qbitConfigNew:/config
       - /home/stenasd4/harddrive/qbit:/downloads
     ports:
-      - 8081:8080
+      - 8095:8095
       - 6881:6881
       - 6881:6881/udp
   ipfs:
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
-      - /home/stenasd4/trove2-back/ipfs_data:/data/ipfs
+      - /home/stenasd4/harddrive/ipfs_data:/data/ipfs
       - /home/stenasd4/harddrive/qbit:/export
     ports:
       - 127.0.0.1:8080:8080

@@ -11,18 +11,18 @@
 - https://www.npmjs.com/package/@elastic/elasticsearch
 - https://planetscale.com/pricing
 
-pm2 start "npm run dev" --name myAppName
-pm2 logs "myAppName"
-pm2 start npm -- run dev
+pm2 start "npm run pathfinder" --name pathfinder
+pm2 start "npm run server" --name server
 
 sudo chown -R 1000:root docker_data   to give elastic accses to folder
 sudo chown -R 1000:root esdata
+chmod u=rwx,g=rwx,o=rwx harddrive2
 # fscrawler
 
 ## todo
 - unit test creat tag
 - unit test getAllChildHashes
-- add 5e books and way to start backend for selected service
+- make all books use same api and elastic
 
 ## done
 - faq

@@ -58,7 +58,7 @@ export async function updateLibrary(path) {
           unlinkSync(element.path);
         }
       } else {
-        console.log(error);
+        console.log("1", error);
       }
     }
   });
@@ -77,6 +77,7 @@ export function updateTagsDb(x) {
               path: path
             })
           } catch (error) {
+            console.log("2", error);
           }
         }
       }
@@ -109,5 +110,6 @@ function creattag(pathString) {
       }
     }
   }
+  console.log(tags.join("/"));
   return tags.join("/");
 }

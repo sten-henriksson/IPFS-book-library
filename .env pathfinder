@@ -1,10 +1,11 @@
+
 DATABASE = "main"
 DB_USERNAME = "root"
 DB_PASSWORD = "root"
 MYSQL_IP = "localhost"
 ELASTIC_INDEX = "main"
 ELASTIC_URL = "http://localhost:9200"
-BOOK_PATH = "/home/stenasd4/harddrive/qbit/Books/Pathfinder/1st Edition"
+BOOK_PATH = "/home/stenasd4/harddrive/Pathfinder/"
 TAG_DEPTH = "0"
-TAGSTART = "Pathfinder"
+TAGSTART = "harddrive"
 PORT = "1338"

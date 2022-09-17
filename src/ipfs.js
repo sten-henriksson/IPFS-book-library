@@ -4,16 +4,23 @@ import { create } from 'ipfs-http-client';
 import { Book } from './db.js';
 
 async function addToNode(node, path) {
-  const a = await node.add(readFileSync(path), {
-    pin: true,
-  });
-  console.log("node", a);
+  let a
+  try {
+    a = await node.add(readFileSync(path), {
+      pin: true,
+    });
+  } catch (error) {
+    a = false
+  }
+
+  console.log("a", path);
   return a;
 }
 
 export async function addBooksToIpfs(node) {
   const books = await Book.findAll({ attributes: ['path'], raw: true });
   for (let index = 0; index < books.length; index++) {
+    console.log(index + "/" + books.length);
     const book = books[index];
     await addToNode(node, book.path)
   }
