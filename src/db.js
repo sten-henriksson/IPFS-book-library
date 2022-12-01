@@ -43,7 +43,7 @@ export async function IniDb() {
 export async function updateLibrary(path) {
   const hashes = await getAllChildHashes(path);
   // creat db models from children in "path"
-  const bookModels = hashes.map((x) => Book.build({ name: x.name, hash: x.hash, path: x.path, tag: creattag(x.path) }));
+  const bookModels = hashes.map((x) => Book.build({ name: x.name, hash: x.hash, path: x.path, tag: false }));
   bookModels.forEach(async (element) => {
     try {
       // saves to db
@@ -64,20 +64,28 @@ export async function updateLibrary(path) {
   });
 }
 export function updateTagsDb(x) {
-  return getTags(x).map(element => {
-    console.log("element", element);
-    if (!element.includes(".pdf")) {
-      if (!element.includes(".zip")) {
-        if (!element.includes(".7z")) {
-          try {
-            let path = element.split("/")
-            path.shift();
-            path = path.join("/")
-            pathTags.upsert({
-              path: path
-            })
-          } catch (error) {
-            console.log("2", error);
+  x.map(async (book) => {
+    try {
+      if (book.hash) {
+        await book.save();
+      }
+    } catch (error) {
+      console.log("2", error);
+    }
+  })
+
+  getTags(x).map(element => {
+    if (element) {
+      if (!element.includes(".pdf")) {
+        if (!element.includes(".zip")) {
+          if (!element.includes(".7z")) {
+            try {
+              pathTags.upsert({
+                path: element
+              })
+            } catch (error) {
+              console.log("2", error);
+            }
           }
         }
       }
@@ -86,30 +94,47 @@ export function updateTagsDb(x) {
 }
 function getTags(bookArr) {
   return bookArr.map((x) => {
-    return creattag(x.path)
+    const tag = creattag(x.path)
+    if (tag) {
+      return tag
+    }
+    else {
+      return false;
+    }
   });
 }
 
 function creattag(pathString) {
   console.log("path", pathString);
-  const path = pathString.split("/")
-  let tags = []
-  let tagStart = false
-  let depth = process.env.TAG_DEPTH || 0
-  for (let index = 0; index < path.length; index++) {
-    const element = path[index];
-    // will make all dir before TAGSTART not be part of formated string
-    if (element == process.env.TAGSTART) {
-      tagStart = true
-    }
-    // after Folder trigger add next 3 folder name to tag name
-    if (tagStart) {
-      if (depth < 3) {
-        tags.push(element)
-        depth++;
-      }
-    }
+  let path = pathString.split("/")
+  path.pop()
+  path.splice(0, 4)
+  if (path.length < 3) {
+    return "no tag"
   }
-  console.log(tags.join("/"));
-  return tags.join("/");
+  console.log(path.join("/"));
+  return path.join("/");
 }
+// function creattag(pathString) {
+//   console.log("path", pathString);
+//   const path = pathString.split("/")
+//   let tags = []
+//   let tagStart = false
+//   let depth = process.env.TAG_DEPTH || 0
+//   for (let index = 0; index < path.length; index++) {
+//     const element = path[index];
+//     // will make all dir before TAGSTART not be part of formated string
+//     if (element == process.env.TAGSTART) {
+//       tagStart = true
+//     }
+//     // after Folder trigger add next 3 folder name to tag name
+//     if (tagStart) {
+//       if (depth < 3) {
+//         tags.push(element)
+//         depth++;
+//       }
+//     }
+//   }
+//   console.log(tags.join("/"));
+//   return tags.join("/");
+// }

@@ -20,7 +20,7 @@ export async function searchElasticPath(keyword) {
 
 export async function syncElastic() {
     const book = await Book.findAll({ attributes: ['name', 'path', 'hash'], raw: true });
-    console.log(book);
+    console.log("search", book);
     for (const key in book) {
         await client.index({
             index: process.env.ELASTIC_INDEX,

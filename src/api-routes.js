@@ -29,8 +29,6 @@ export default async function route(app) {
     let tag = req.params.tagId.split("_")
     tag = tag.join("/")
     console.log(tag);
-    tag = "Pathfinder/" + tag
-    console.log(tag);
     const books = await Book.findAll({ where: { tag: tag }, raw: true })
     let pathsort = books.sort((a, b) => a.name.localeCompare(b.name))
     if (pathsort.length == 0) {

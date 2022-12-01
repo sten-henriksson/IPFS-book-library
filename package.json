@@ -5,9 +5,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pathfinder": "NODE_ENV=production DATABASE=main DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost ELASTIC_INDEX=main ELASTIC_URL=http://localhost:9200 BOOK_PATH='/home/stenasd4/harddrive/Pathfinder' TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./fsCrawl",
-    "dnd": "NODE_ENV=production DATABASE=main DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost ELASTIC_INDEX=main ELASTIC_URL=http://localhost:9200 BOOK_PATH='/home/stenasd4/harddrive/Dungeons & Dragons/5th Edition (5e)' TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./fsCrawl",
-    "server": "NODE_ENV=production node ./index"
+    "pathfinder": "NODE_ENV=production DATABASE=main3 DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost ELASTIC_INDEX=main ELASTIC_URL=http://localhost:9200 BOOK_PATH='/home/stenasd6/drive/Pathfinder' TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./fsCrawl",
+    "dnd": "NODE_ENV=production DATABASE=main3 DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost ELASTIC_INDEX=main ELASTIC_URL=http://localhost:9200 BOOK_PATH='/home/stenasd6/drive/Dungeons & Dragons/5th Edition (5e)' TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./fsCrawl",
+    "server": "NODE_ENV=production DATABASE=main3 DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost ELASTIC_INDEX=main ELASTIC_URL=http://localhost:9200 node ./index",
+    "ipfs": "NODE_ENV=production DATABASE=main3 DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost  TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./updateIpfs",
+    "updateTags": "NODE_ENV=production DATABASE=main3 DB_USERNAME=root DB_PASSWORD=root MYSQL_IP=localhost  TAG_DEPTH=0 TAGSTART='harddrive' PORT=1337 node ./updateTags"
   },
   "repository": {
     "type": "git",

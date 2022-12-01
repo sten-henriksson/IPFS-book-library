@@ -1,21 +1,21 @@
 version: "3.9"
 services:
-  db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: main
-    ports:
-      - 3306:3306
-    volumes:
-      - "./mysql_config/my.conf:/etc/mysql/conf.d/config-file.cnf"
-      - "./mysql_sqldata:/var/lib/mysql:rw"
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8090:8080
+  # db:
+  #   image: mysql
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: main
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - "./mysql_config/my.conf:/etc/mysql/conf.d/config-file.cnf"
+  #     - "./mysql_sqldata:/var/lib/mysql:rw"
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8090:8080
   elasticsearch:
     container_name: tqd-elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
@@ -40,8 +40,8 @@ services:
       - TZ=Europe/London
       - WEBUI_PORT=8095
     volumes:
-      - /home/stenasd4/harddrive/qbit/qbitConfigNew:/config
-      - /home/stenasd4/harddrive/qbit:/downloads
+      - /home/stenasd6/drive/qbit/qbitConfigNew:/config
+      - /home/stenasd6/drive/qbit:/downloads
     ports:
       - 8095:8095
       - 6881:6881
@@ -50,11 +50,10 @@ services:
     image: ipfs/kubo:latest
     restart: unless-stopped
     volumes:
-      - /home/stenasd4/harddrive/ipfs_data:/data/ipfs
-      - /home/stenasd4/harddrive/qbit:/export
+      - /home/stenasd6/drive/ipfs_data:/data/ipfs
+      - /home/stenasd6/drive/qbit:/export
     ports:
       - 127.0.0.1:8080:8080
       - 127.0.0.1:5001:5001
       - 4001:4001
       - 4001:4001/udp
-
