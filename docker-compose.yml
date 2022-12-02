@@ -53,7 +53,7 @@ services:
       - /home/stenasd6/drive/ipfs_data:/data/ipfs
       - /home/stenasd6/drive/qbit:/export
     ports:
-      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8085:8085
       - 127.0.0.1:5001:5001
       - 4001:4001
       - 4001:4001/udp

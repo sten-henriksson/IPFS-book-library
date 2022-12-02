@@ -1,19 +1,19 @@
 import { readdir } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import Hash from 'ipfs-only-hash';
+
 function concatPath(path, fold) {
   return `${path}/${fold.name}`;
 }
 
 async function getIpfsHash(path) {
-  let hash = false
+  let hash = false;
   try {
     hash = await Hash.of(readFileSync(path));
   } catch (error) {
-    console.log(error);
-    hash = false
+    hash = false;
   }
-  return hash
+  return hash;
 }
 /**
  * @param  {string} path parrent path that all children get checked for hashes
@@ -28,7 +28,6 @@ export default async function getAllChildHashes(path) {
       // https://nodejs.org/docs/latest/api/fs.html#direntisdirectory
       // eslint-disable-next-line no-await-in-loop
       const files = await readdir(dirrPath, { withFileTypes: true });
-      console.log(files[0]);
       const dirr = files.filter((x) => x.isDirectory());
       const file = files.filter((x) => x.isFile());
       dirrs = dirrs.concat(dirr.map((x) => concatPath(dirrPath, x)));

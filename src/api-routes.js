@@ -1,15 +1,10 @@
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
+// eslint-disable-next-line import/extensions
 import { Book, pathTags } from './db.js';
 import { searchElasticPath } from './elastic.js';
+
 export default async function route(app) {
-  /* app.get('/api/:tagId', (req) => {
-    if (!req.params.tagId) {
-      return false;
-    }
-    // send ipfs hash and torrent datahash/uri
-    //
-  }); */
   app.get('/books', async (req, res) => {
     const book = await Book.findAll({ attributes: ['name', 'hash'], raw: true });
     res.json(book);
@@ -25,20 +20,18 @@ export default async function route(app) {
     if (!req.params.page) {
       return false;
     }
-    console.log(req.params.tagId.replace('_', '/'));
-    let tag = req.params.tagId.split("_")
-    tag = tag.join("/")
-    console.log(tag);
-    const books = await Book.findAll({ where: { tag: tag }, raw: true })
-    let pathsort = books.sort((a, b) => a.name.localeCompare(b.name))
-    if (pathsort.length == 0) {
-      pathsort = [{ name: "bad search", path: false, hash: false }]
+    let tag = req.params.tagId.split('_');
+    tag = tag.join('/');
+    const books = await Book.findAll({ where: { tag }, raw: true });
+    let pathsort = books.sort((a, b) => a.name.localeCompare(b.name));
+    if (pathsort.length === 0) {
+      pathsort = [{ name: 'bad search', path: false, hash: false }];
     }
-    const page_amount = 31
-    let page = req.params.page - 1
-    let startpage = page * page_amount
-    let sendvar = pathsort.slice(startpage, startpage + page_amount)
-    res.json({ books: sendvar, pages: Math.floor(pathsort.length / page_amount) + 1 })
+    const pageAmount = 31;
+    const page = req.params.page - 1;
+    const startpage = page * pageAmount;
+    const sendvar = pathsort.slice(startpage, startpage + pageAmount);
+    res.json({ books: sendvar, pages: Math.floor(pathsort.length / pageAmount) + 1 });
   });
   app.get('/search/:page/:tagId', async (req, res) => {
     if (!req.params.tagId) {
@@ -48,14 +41,14 @@ export default async function route(app) {
       return false;
     }
     const elasticSeach = await searchElasticPath(req.params.tagId.replace('_', '/'));
-    let pathsort = elasticSeach//elasticSeach.sort((a, b) => a.name.localeCompare(b.name))
-    if (pathsort.length == 0) {
-      pathsort = [{ name: "bad search", path: false, hash: false }]
+    let pathsort = elasticSeach;// elasticSeach.sort((a, b) => a.name.localeCompare(b.name))
+    if (pathsort.length === 0) {
+      pathsort = [{ name: 'bad search', path: false, hash: false }];
     }
-    const page_amount = 31
-    let page = req.params.page - 1
-    let startpage = page * page_amount
-    let sendvar = pathsort.slice(startpage, startpage + page_amount)
-    res.json({ books: sendvar, pages: Math.floor(pathsort.length / page_amount) + 1 })
+    const pageAmount = 31;
+    const page = req.params.page - 1;
+    const startpage = page * pageAmount;
+    const sendvar = pathsort.slice(startpage, startpage + pageAmount);
+    res.json({ books: sendvar, pages: Math.floor(pathsort.length / pageAmount) + 1 });
   });
 }

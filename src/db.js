@@ -2,10 +2,12 @@
 /* eslint-disable import/no-unresolved */
 import { Sequelize, DataTypes } from 'sequelize';
 import { unlinkSync } from 'node:fs';
+import dotenv from 'dotenv';
 import getAllChildHashes from './fs-crawler.js';
-import dotenv from 'dotenv'
-dotenv.config()
+
+dotenv.config();
 console.log(process.env);
+// eslint-disable-next-line max-len
 const sequelize = new Sequelize(process.env.DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: process.env.MYSQL_IP,
   dialect: 'mysql',
@@ -37,13 +39,31 @@ export async function IniDb() {
     console.error('Unable to connect to the database:', error);
   }
 }
+function creattag(pathString) {
+  const path = pathString.split('/');
+  path.splice(0, 3);
+  path.pop();
+  while (true) {
+    if (path.length <= 3) {
+      break;
+    } else {
+      path.pop();
+    }
+  }
+  // while (path.length >= 3) {
+  //   path.pop();
+  // }
+  return path.join('/');
+}
 /**
  * @param  {} path path where it will crawl ower children and add to db. duplicate gets removed
  */
 export async function updateLibrary(path) {
   const hashes = await getAllChildHashes(path);
   // creat db models from children in "path"
-  const bookModels = hashes.map((x) => Book.build({ name: x.name, hash: x.hash, path: x.path, tag: false }));
+  const bookModels = hashes.map((x) => Book.build({
+    name: x.name, hash: x.hash, path: x.path, tag: creattag(x.path),
+  }));
   bookModels.forEach(async (element) => {
     try {
       // saves to db
@@ -58,83 +78,50 @@ export async function updateLibrary(path) {
           unlinkSync(element.path);
         }
       } else {
-        console.log("1", error);
+        console.log('1', error);
       }
     }
   });
 }
+function getTags(bookArr) {
+  return bookArr.map((x) => creattag(x.path));
+}
 export function updateTagsDb(x) {
-  x.map(async (book) => {
-    try {
-      if (book.hash) {
+  x.forEach(async (book) => {
+    if (book.hash) {
+      try {
+        const bookTag = creattag(book.path);
+        console.log(book.path);
+        console.log(bookTag);
+        let path = bookTag.split('/');
+        path.shift();
+        path = path.join('/');
+        // eslint-disable-next-line no-param-reassign
+        book.tag = path;
         await book.save();
+      } catch (error) {
+        console.log('2', error);
       }
-    } catch (error) {
-      console.log("2", error);
     }
-  })
-
-  getTags(x).map(element => {
-    if (element) {
-      if (!element.includes(".pdf")) {
-        if (!element.includes(".zip")) {
-          if (!element.includes(".7z")) {
-            try {
-              pathTags.upsert({
-                path: element
-              })
-            } catch (error) {
-              console.log("2", error);
-            }
+  });
+  return getTags(x).forEach((element) => {
+    console.log('element', element);
+    if (!element.includes('3rd Party')) {
+      if (!element.includes('.zip')) {
+        if (!element.includes('.7z')) {
+          try {
+            let path = element.split('/');
+            path.shift();
+            path = path.join('/');
+            pathTags.upsert({
+              path,
+            });
+            console.log(path);
+          } catch (error) {
+            console.log('2', error);
           }
         }
       }
     }
-  })
-}
-function getTags(bookArr) {
-  return bookArr.map((x) => {
-    const tag = creattag(x.path)
-    if (tag) {
-      return tag
-    }
-    else {
-      return false;
-    }
   });
 }
-
-function creattag(pathString) {
-  console.log("path", pathString);
-  let path = pathString.split("/")
-  path.pop()
-  path.splice(0, 4)
-  if (path.length < 3) {
-    return "no tag"
-  }
-  console.log(path.join("/"));
-  return path.join("/");
-}
-// function creattag(pathString) {
-//   console.log("path", pathString);
-//   const path = pathString.split("/")
-//   let tags = []
-//   let tagStart = false
-//   let depth = process.env.TAG_DEPTH || 0
-//   for (let index = 0; index < path.length; index++) {
-//     const element = path[index];
-//     // will make all dir before TAGSTART not be part of formated string
-//     if (element == process.env.TAGSTART) {
-//       tagStart = true
-//     }
-//     // after Folder trigger add next 3 folder name to tag name
-//     if (tagStart) {
-//       if (depth < 3) {
-//         tags.push(element)
-//         depth++;
-//       }
-//     }
-//   }
-//   console.log(tags.join("/"));
-//   return tags.join("/");
-// }

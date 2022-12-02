@@ -4,25 +4,27 @@ import { create } from 'ipfs-http-client';
 import { Book } from './db.js';
 
 async function addToNode(node, path) {
-  let a
+  let a;
   try {
     a = await node.add(readFileSync(path), {
       pin: true,
     });
   } catch (error) {
-    a = false
+    a = false;
   }
 
-  console.log("a", path);
+  console.log('a', path);
   return a;
 }
 
 export async function addBooksToIpfs(node) {
   const books = await Book.findAll({ attributes: ['path'], raw: true });
+  // eslint-disable-next-line no-plusplus
   for (let index = 0; index < books.length; index++) {
-    console.log(index + "/" + books.length);
+    console.log(`${index}/${books.length}`);
     const book = books[index];
-    await addToNode(node, book.path)
+    // eslint-disable-next-line no-await-in-loop
+    await addToNode(node, book.path);
   }
 }
 
